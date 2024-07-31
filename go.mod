@@ -1,4 +1,4 @@
-module gotools
+module github.com/Sqkam/gotools
 
 go 1.22.0
 
