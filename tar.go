@@ -2,22 +2,17 @@ package gotools
 
 import (
 	"archive/tar"
-	"github.com/pierrec/lz4"
 	"io"
 	"os"
 	"path/filepath"
 )
 
-func TarToLz4(src string, buf io.Writer) error {
-	w := lz4.NewWriter(buf)
-	defer w.Close()
-	return TarTo(src, w)
-}
 func TarTo(src string, buf io.Writer) error {
-	tw := tar.NewWriter(buf)
-	defer tw.Close()
 
-	return filepath.Walk(src, func(file string, fi os.FileInfo, err error) error {
+	tw := tar.NewWriter(buf)
+
+	// walk through every file in the folder
+	err := filepath.Walk(src, func(file string, fi os.FileInfo, err error) error {
 		// generate tar header
 		header, err := tar.FileInfoHeader(fi, file)
 		if err != nil {
@@ -45,4 +40,13 @@ func TarTo(src string, buf io.Writer) error {
 		return nil
 	})
 
+	// produce tar
+	if err := tw.Close(); err != nil {
+		return err
+	}
+
+	if err != nil {
+		return err
+	}
+	return nil
 }
