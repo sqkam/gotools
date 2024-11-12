@@ -1,4 +1,4 @@
-package gotools
+package tar
 
 import (
 	"archive/tar"
@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 )
 
-func TarTo(src string, buf io.Writer) error {
+func To(src string, buf io.Writer) error {
 
 	tw := tar.NewWriter(buf)
 

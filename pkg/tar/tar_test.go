@@ -1,4 +1,4 @@
-package gotools
+package tar
 
 import (
 	"io"
@@ -70,7 +70,7 @@ func Test_TarTo(t *testing.T) {
 
 			errCh := make(chan error)
 			go func() {
-				err = TarTo(tt.path, pw)
+				err = To(tt.path, pw)
 				pw.Close()
 				errCh <- err
 			}()
