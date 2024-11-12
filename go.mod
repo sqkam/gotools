@@ -1,4 +1,4 @@
-module github.com/Sqkam/gotools
+module github.com/sqkam/gotools
 
 go 1.20
 
