@@ -5,17 +5,20 @@ import (
 )
 
 type FastConfig struct {
-	file string
+	file       string
+	configType confType
 }
 
 func NewFastConfig[T interface{}](conf T, options ...Option) T {
 	c := &FastConfig{
-		file: "./config.yaml",
+		file:       "./config.yaml",
+		configType: ConfTypeEmpty,
 	}
 	for _, o := range options {
 		o.Apply(c)
 	}
 	v := viper.New()
+	v.SetConfigType(string(c.configType))
 	v.SetConfigFile(c.file)
 	if err := v.ReadInConfig(); err != nil {
 		panic(err)
@@ -41,3 +44,18 @@ func WithFile(file string) Option {
 		c.file = file
 	})
 }
+func WithConfType(t confType) Option {
+	return OptionFunc(func(c *FastConfig) {
+		c.configType = t
+	})
+}
+
+// ConfType conf type
+type confType string
+
+const (
+	ConfTypeYaml  confType = "yaml"
+	ConfTypeYml   confType = "yml"
+	ConfTypeJson  confType = "json"
+	ConfTypeEmpty confType = ""
+)
